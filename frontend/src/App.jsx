@@ -1,5 +1,7 @@
+// frontend/src/App.jsx
 import React from 'react';
-import { Routes, Route, Link, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Simulations from './pages/Simulations';
 import Login from './pages/Login';
@@ -10,31 +12,13 @@ import AdminPanel from './pages/AdminPanel';
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem('token');
   return token ? children : <Navigate to="/login" />;
-}
+};
 
-function App() {
-  const logout = () => { localStorage.removeItem('token'); localStorage.removeItem('role'); window.location.href = '/'; }
+export default function App() {
   return (
-    <div>
-      <nav className="p-4 bg-slate-800 text-white flex justify-between">
-        <div className="font-bold">Blixora Labs</div>
-        <div className="flex gap-4">
-          <Link to="/">Home</Link>
-          <Link to="/simulations">Simulations</Link>
-          <Link to="/dashboard">Dashboard</Link>
-          {localStorage.getItem('role') === 'admin' && <Link to="/admin">Admin</Link>}
-          {!localStorage.getItem('token') ? (
-            <>
-              <Link to="/login">Login</Link>
-              <Link to="/register">Register</Link>
-            </>
-          ) : (
-            <button onClick={logout}>Logout</button>
-          )}
-        </div>
-      </nav>
-
-      <main className="p-6">
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-200">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/simulations" element={<Simulations />} />
@@ -47,6 +31,3 @@ function App() {
     </div>
   );
 }
-export default App;
-
-
