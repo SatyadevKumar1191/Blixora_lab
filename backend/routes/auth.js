@@ -32,7 +32,12 @@ router.post(
       const payload = { id: user._id, role: user.role };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-      res.json({ role: role, token });
+      // send user object along with token (fix for frontend)
+      res.json({
+        message: "User registered successfully",
+        user: { id: user._id, name: user.name, email: user.email, role: user.role },
+        token
+      });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
@@ -57,7 +62,12 @@ router.post(
       const payload = { id: user._id, role: user.role };
       const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "7d" });
 
-      res.json({ userId: user._id, token });
+      //also send user object here for consistency
+      res.json({
+        message: "Login successful",
+        user: { id: user._id, name: user.name, email: user.email, role: user.role },
+        token
+      });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server error");
