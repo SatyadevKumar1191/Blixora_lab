@@ -9,6 +9,7 @@ const EnrollmentSchema = new mongoose.Schema(
       enum: ["enrolled", "in-progress", "completed"],
       default: "enrolled",
     },
+    progress: { type: Number, default: 0 }, // 0 to 100 %
   },
   { timestamps: true }
 );

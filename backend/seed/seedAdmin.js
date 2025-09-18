@@ -28,7 +28,7 @@ dotenv.config();
     });
 
     await admin.save();
-    console.log("✅ Admin created: email=admin@blixoralabs.dev password=Admin@123");
+    console.log(" Admin created: email=admin@blixoralabs.dev password=Admin@123");
     process.exit(0);
   } catch (err) {
     console.error(err);

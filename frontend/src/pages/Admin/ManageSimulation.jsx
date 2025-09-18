@@ -1,42 +1,28 @@
-// frontend/src/pages/AdminPanel.jsx
 import React, { useEffect, useState } from 'react';
-import API from '../api/axios';
+import API from '../../api/axios';
 
-export default function AdminPanel() {
+export default function ManageSimulations(){
   const [sims, setSims] = useState([]);
-  const [form, setForm] = useState({
-    title: '',
-    category: '',
-    level: 'Beginner',
-    duration: '',
-    description: ''
-  });
-  const [loading, setLoading] = useState(false);
+  const [form, setForm] = useState({ title:'', category:'', level:'Beginner', duration:'', description:'' });
 
   const fetch = async () => {
     try {
-      setLoading(true);
       const res = await API.get('/simulations');
       setSims(res.data || []);
     } catch (err) {
-      console.error(err);
       alert(err.response?.data?.message || 'Failed to load simulations');
-    } finally {
-      setLoading(false);
     }
   };
 
-  useEffect(() => { fetch(); }, []);
+  useEffect(()=>{ fetch(); }, []);
 
   const create = async (e) => {
     e.preventDefault();
     try {
-      const payload = { ...form }; // removed slug
-      await API.post('/simulations', payload);
+      await API.post('/simulations', form);
       setForm({ title:'', category:'', level:'Beginner', duration:'', description:'' });
       fetch();
     } catch (err) {
-      console.error(err);
       alert(err.response?.data?.message || 'Create failed');
     }
   };
@@ -47,7 +33,6 @@ export default function AdminPanel() {
       await API.delete(`/simulations/${id}`);
       fetch();
     } catch (err) {
-      console.error(err);
       alert(err.response?.data?.message || 'Delete failed');
     }
   };
@@ -70,7 +55,7 @@ export default function AdminPanel() {
       </form>
 
       <div className="mt-6 grid gap-4">
-        {loading ? <div>Loading...</div> : sims.map(s => (
+        {sims.map(s => (
           <div key={s._id} className="bg-white p-4 rounded shadow flex justify-between items-center">
             <div>
               <div className="font-semibold">{s.title}</div>
